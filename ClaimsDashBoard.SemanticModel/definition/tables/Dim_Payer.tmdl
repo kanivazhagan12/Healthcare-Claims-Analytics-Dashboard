@@ -1,0 +1,54 @@
+table Dim_Payer
+	lineageTag: 42dfa368-85bc-498b-8e4f-fde49ed7ff3f
+
+	column PayerKey
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: f5354e01-7161-47ee-9872-2808b4aba8d5
+		summarizeBy: none
+		sourceColumn: PayerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PayerID
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 8292e572-f451-41ae-b881-21e3bd1983b5
+		summarizeBy: none
+		sourceColumn: PayerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PayerName
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: f6e4aee8-5b9e-4ded-aa27-134d498452cf
+		summarizeBy: none
+		sourceColumn: PayerName
+
+		annotation SummarizationSetBy = Automatic
+
+	column PayerPlan
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 7d338872-41b0-4bb5-b481-ec0f31d4b8d4
+		summarizeBy: none
+		sourceColumn: PayerPlan
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Payer = m
+		mode: dual
+		source =
+				let
+				    Source = Sql.Database("DESKTOP-7QI3H63\SQLEXPRESS", "Claims"),
+				    dbo_Dim_Payer = Source{[Schema="dbo",Item="Dim_Payer"]}[Data]
+				in
+				    dbo_Dim_Payer
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

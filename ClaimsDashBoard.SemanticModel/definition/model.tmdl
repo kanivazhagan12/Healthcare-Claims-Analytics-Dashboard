@@ -1,0 +1,23 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["Dim_Claims","Dim_Date","Dim_Patient","Dim_Payer","Dim_Provider","Fact_Claims"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Dim_Claims
+ref table Dim_Date
+ref table Dim_Patient
+ref table Dim_Payer
+ref table Dim_Provider
+ref table Fact_Claims
+
+ref cultureInfo en-US
+

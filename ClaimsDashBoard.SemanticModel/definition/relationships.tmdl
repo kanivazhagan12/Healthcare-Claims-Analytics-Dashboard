@@ -1,0 +1,51 @@
+relationship 81915aa5-55c3-4379-8cdb-46c73b3d47a4
+	fromColumn: Fact_Claims.ClaimKey
+	toColumn: Dim_Claims.ClaimKey
+
+	annotation PBI_IsFromSource = FS
+
+relationship 01441da9-9054-464e-9ccf-5540191e36fe
+	isActive: false
+	fromColumn: Fact_Claims.AdjudicationDateKey
+	toColumn: Dim_Date.DateKey
+
+	annotation PBI_IsFromSource = FS
+
+relationship 75dfed9f-143e-4485-81e4-0881ed258d3e
+	isActive: false
+	fromColumn: Fact_Claims.LastActivityDateKey
+	toColumn: Dim_Date.DateKey
+
+	annotation PBI_IsFromSource = FS
+
+relationship e8f4f77a-f859-408e-9408-b44bd77ca129
+	isActive: false
+	fromColumn: Fact_Claims.ReceivedDateKey
+	toColumn: Dim_Date.DateKey
+
+	annotation PBI_IsFromSource = FS
+
+relationship 68e04c3b-0063-44b1-8de2-529d1ff684db
+	fromColumn: Fact_Claims.ServiceDateKey
+	toColumn: Dim_Date.DateKey
+
+	annotation PBI_IsFromSource = FS
+
+relationship 525a9a32-b252-4eae-94a0-a008b253d62d
+	fromColumn: Fact_Claims.PatientKey
+	toColumn: Dim_Patient.PatientKey
+
+	annotation PBI_IsFromSource = FS
+
+relationship 699f9dcb-1f10-49d6-bfeb-621999744968
+	fromColumn: Fact_Claims.PayerKey
+	toColumn: Dim_Payer.PayerKey
+
+	annotation PBI_IsFromSource = FS
+
+relationship b1ac0a24-70ea-4a4e-a57f-ce770500b554
+	fromColumn: Fact_Claims.ProviderKey
+	toColumn: Dim_Provider.ProviderKey
+
+	annotation PBI_IsFromSource = FS
+

@@ -1,0 +1,54 @@
+table Dim_Provider
+	lineageTag: 07693f9d-4942-43b3-b97d-97575227eab5
+
+	column ProviderKey
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 396bda3d-09dc-428d-8d7a-8c1b76138b4c
+		summarizeBy: none
+		sourceColumn: ProviderKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProviderID
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: b648964e-0c0d-490e-b726-cd7ef5680475
+		summarizeBy: none
+		sourceColumn: ProviderID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProviderSpecialty
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 685f7362-ad3e-45f6-b087-8ab04a7b0429
+		summarizeBy: none
+		sourceColumn: ProviderSpecialty
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProviderLocation
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 4e587bb1-c84c-4984-9eb1-9e0d76ac7899
+		summarizeBy: none
+		sourceColumn: ProviderLocation
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Provider = m
+		mode: dual
+		source =
+				let
+				    Source = Sql.Database("DESKTOP-7QI3H63\SQLEXPRESS", "Claims"),
+				    dbo_Dim_Provider = Source{[Schema="dbo",Item="Dim_Provider"]}[Data]
+				in
+				    dbo_Dim_Provider
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

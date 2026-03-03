@@ -1,0 +1,97 @@
+table Dim_Date
+	lineageTag: 8913114b-20fe-4059-bf75-615419a13263
+
+	column DateKey
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: b62d72af-bd44-4c0e-81e5-1fc7dc82a0ce
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column FullDate
+		dataType: dateTime
+		isNullable: false
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 50681cbc-852a-43f7-9980-4e1f2567e4a5
+		summarizeBy: none
+		sourceColumn: FullDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 64d524fe-6909-4cae-94fe-36ea49940c7a
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: a8b0d344-dcfd-4dc4-bb57-427858714df7
+		summarizeBy: none
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: b5de9944-9523-4c56-9003-cfb441b914fc
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthName
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(50)
+		lineageTag: 28f5e818-ca5e-41e0-a80a-e73ae1f88f66
+		summarizeBy: none
+		sourceColumn: MonthName
+		sortByColumn: Month
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: e3c7c192-bb07-483a-a3cb-4ea2c990b863
+		summarizeBy: none
+		sourceColumn: Day
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Date = m
+		mode: dual
+		source =
+				let
+				    Source = Sql.Database("DESKTOP-7QI3H63\SQLEXPRESS", "Claims"),
+				    dbo_Dim_Date = Source{[Schema="dbo",Item="Dim_Date"]}[Data]
+				in
+				    dbo_Dim_Date
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,130 @@
+table Dim_Claims
+	lineageTag: 8c9b268d-7013-4b05-ade7-4bf6e70939da
+
+	column ClaimKey
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 485674b2-e83d-4971-9c05-c07eed231ea8
+		summarizeBy: none
+		sourceColumn: ClaimKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimID
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: 0ebc029e-44e2-43a3-88ee-4a2fdaaa80d2
+		summarizeBy: none
+		sourceColumn: ClaimID
+
+		annotation SummarizationSetBy = Automatic
+
+	column POS
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 64ca4de0-b05e-469e-9404-b034b2134a87
+		summarizeBy: none
+		sourceColumn: POS
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiagnosisCode
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: a2c06dad-f988-4299-8006-989d84a6ca78
+		summarizeBy: none
+		sourceColumn: DiagnosisCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProcedureCode
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 295ddbd7-f4e1-400b-912b-b3b47c9aa53d
+		summarizeBy: none
+		sourceColumn: ProcedureCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimStatus
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 419f65ca-6696-46e9-b864-8e9c7e166298
+		summarizeBy: none
+		sourceColumn: ClaimStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column DenialCode
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 5b9a001d-aa7f-444c-af72-c913b8afe7d9
+		summarizeBy: none
+		sourceColumn: DenialCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column DenialReason
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 2a58999f-d6ac-45e1-8b46-9d5da1a36b4a
+		summarizeBy: none
+		sourceColumn: DenialReason
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimType
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: e83cb20e-0145-40fe-9ecb-0e5d3b40cf12
+		summarizeBy: none
+		sourceColumn: ClaimType
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimSubmissionMethod
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: f40a0c31-6c64-49b2-981e-924ca46b7ab6
+		summarizeBy: none
+		sourceColumn: ClaimSubmissionMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Denial Label' = IF(Dim_Claims[DenialCode]="N/A","Paid/Pended",Dim_Claims[DenialCode]&"-"&Dim_Claims[DenialReason])
+		lineageTag: 03eccb41-32a6-4d25-839f-d9d41d890d90
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Denial Category' = ```
+			
+			SWITCH( TRUE(),
+			    Dim_Claims[DenialCode] = "N/A", "Paid/Pended",    
+			    Dim_Claims[DenialCode] IN {"CO-18", "CO-197", "CO-29", "CO-97"}, "Controllable",    
+			    Dim_Claims[DenialCode] IN {"CO-22", "CO-27"}, "Uncontrollable",
+			    "Uncontrollable"
+			)
+			
+			```
+		lineageTag: dfa23438-52d5-4b6f-87c2-05b60867168d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Claims = m
+		mode: dual
+		source =
+				let
+				    Source = Sql.Database("DESKTOP-7QI3H63\SQLEXPRESS", "Claims"),
+				    dbo_Dim_Claims = Source{[Schema="dbo",Item="Dim_Claims"]}[Data]
+				in
+				    dbo_Dim_Claims
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

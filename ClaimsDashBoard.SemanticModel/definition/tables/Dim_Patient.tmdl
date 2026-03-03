@@ -1,0 +1,84 @@
+table Dim_Patient
+	lineageTag: 9f7e92bc-bcb7-4967-aa49-e17cf5aa7400
+
+	column PatientKey
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: a4d5ae37-db87-4c44-9b42-c9bbc9d5fec9
+		summarizeBy: none
+		sourceColumn: PatientKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PatientID
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: b358dead-b58c-44ac-b788-39303f906e48
+		summarizeBy: none
+		sourceColumn: PatientID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PatientAge
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: ea8add14-defa-4a56-9053-e522d5f82c52
+		summarizeBy: none
+		sourceColumn: PatientAge
+
+		annotation SummarizationSetBy = Automatic
+
+	column PatientGender
+		dataType: string
+		sourceProviderType: char
+		lineageTag: a26582a5-a300-47de-9afe-58bfbce25c37
+		summarizeBy: none
+		sourceColumn: PatientGender
+
+		annotation SummarizationSetBy = Automatic
+
+	column PatientIncome
+		dataType: double
+		sourceProviderType: decimal(10, 2)
+		lineageTag: a2a9b3e1-b832-4d5f-bd59-b4920b0b081f
+		summarizeBy: none
+		sourceColumn: PatientIncome
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MaritalStatus
+		dataType: string
+		sourceProviderType: varchar(20)
+		lineageTag: 3079681e-ab04-4eeb-9a34-34fc17a2a549
+		summarizeBy: none
+		sourceColumn: MaritalStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmploymentStatus
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 93f1dcbb-82a4-4be7-8563-0ff132d06145
+		summarizeBy: none
+		sourceColumn: EmploymentStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Patient = m
+		mode: dual
+		source =
+				let
+				    Source = Sql.Database("DESKTOP-7QI3H63\SQLEXPRESS", "Claims"),
+				    dbo_Dim_Patient = Source{[Schema="dbo",Item="Dim_Patient"]}[Data]
+				in
+				    dbo_Dim_Patient
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

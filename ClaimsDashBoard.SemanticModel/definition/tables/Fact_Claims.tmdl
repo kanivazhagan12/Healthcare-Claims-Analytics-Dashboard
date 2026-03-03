@@ -1,0 +1,292 @@
+table Fact_Claims
+	lineageTag: ecceaf77-779e-4cb7-ab2d-7f4b9aa845cf
+
+	measure 'Total Billed Amount' = SUM(Fact_Claims[BilledAmount])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: fc991681-f4b3-4b14-bd2d-a11969ffda18
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Total Paid Amount' = SUM(Fact_Claims[PaidAmount])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 4f5192df-5169-4852-8560-0a192aeb0428
+
+	measure 'Total A/R Amount' = [Total Billed Amount]-[Total Paid Amount]
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: c5d10ca3-e6d7-4174-8ec0-f824db7b5a71
+
+	measure 'Net Collection Rate %' = DIVIDE([Total Paid Amount],[Total Allowed Amount])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: b3ebb5c8-802e-465d-91e1-00da2492d00f
+
+	measure 'Total Claims Count' = COUNTROWS(Fact_Claims)
+		formatString: 0
+		lineageTag: 5039a6c9-247d-42aa-ba55-07d280700622
+
+	measure 'Avg Paid Per Claim' = DIVIDE([Total Paid Amount],[Total Claims Count],0)
+		lineageTag: f9cf381d-9ec6-4515-8975-a6e7cb55f062
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total final' = DISTINCTCOUNT(Fact_Claims[ClaimKey])
+		formatString: 0
+		lineageTag: 22f7bb1e-6e8d-4c09-af15-72f696a754e8
+
+	measure Tb = SUM(Fact_Claims[BilledAmount])
+		lineageTag: a82898e8-499d-4c98-a7bb-3ebd00047625
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Allowed Amount' = SUM(Fact_Claims[AllowedAmount])
+		lineageTag: af11b965-c9ae-4518-97e3-0b545973aec0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Organizational Denial Rate %' = DIVIDE(CALCULATE(COUNT(Fact_Claims[ClaimKey]),Dim_Claims[ClaimStatus]="Denied"),COUNT(Fact_Claims[ClaimKey]))
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: e9af3e63-691d-4fe3-9433-fd71d6527714
+
+	measure 'Total Denied Amount' = CALCULATE(SUM(Fact_Claims[BilledAmount]),Dim_Claims[ClaimStatus]="Denied")
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: b13d7980-a3f0-45fe-bc5f-404a66a640f6
+
+	measure 'Denied Claim Volume' = CALCULATE(COUNT(Fact_Claims[ClaimKey]),Dim_Claims[ClaimStatus]="Denied")
+		formatString: 0
+		lineageTag: 94d44dc5-1283-4ac9-bd05-047ae2fafec4
+
+	measure 'Claim Processing Cycle Time' = AVERAGEX('Fact_Claims', 'Fact_Claims'[DaysOutstanding])
+		formatString: 0
+		lineageTag: 58950edd-9b2a-4cfa-a8f1-5b77709650f7
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Clean Claim Rate %' = ```
+			
+			DIVIDE(
+			    CALCULATE(COUNT('Fact_Claims'[ClaimKey]), 'Dim_Claims'[ClaimStatus] IN {"Paid", "Approved"}),
+			    COUNT('Fact_Claims'[ClaimKey]),
+			    0
+			)
+			
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 52b1f603-422b-46ee-82c4-414a5f62eab4
+
+	measure '90+ Day Risk %' = ```
+			
+			DIVIDE(
+			    CALCULATE(SUM('Fact_Claims'[BilledAmount]), 'Fact_Claims'[Aging Bucket] = "90+ Days"),
+			    SUM('Fact_Claims'[BilledAmount]),
+			    0
+			)
+			
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 8ff3f963-9587-4a44-8821-3cb32646cd25
+
+	measure 'Last Refreshed' = ```
+			"Data as of: " & FORMAT(NOW(), "MM/DD/YYYY HH:mm AM/PM")
+			
+			```
+		lineageTag: 56c983d5-67fa-4d36-8525-a04bc8302358
+
+	column FactKey
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 603123af-b8c6-4b4f-8313-62c753e34b95
+		summarizeBy: count
+		sourceColumn: FactKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PatientKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 648f5c04-af3a-4b19-8fd8-4b5ae070134a
+		summarizeBy: none
+		sourceColumn: PatientKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProviderKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 64fdbe05-bc78-4bf1-8ad9-4d0fa40ab97b
+		summarizeBy: none
+		sourceColumn: ProviderKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PayerKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 8271568c-6ec6-44b3-8647-b5e13b3e22fe
+		summarizeBy: none
+		sourceColumn: PayerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: d3a34b8e-e660-410f-9e15-645b9b609035
+		summarizeBy: none
+		sourceColumn: ClaimKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ServiceDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: c99a9bf0-f779-4e76-9ebc-9de5d5624881
+		summarizeBy: none
+		sourceColumn: ServiceDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReceivedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 905de388-bd3f-4b24-bfd0-003a1ed439ed
+		summarizeBy: count
+		sourceColumn: ReceivedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column AdjudicationDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: f4eb9904-cd2f-4cd9-b039-80a2fd36e563
+		summarizeBy: count
+		sourceColumn: AdjudicationDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastActivityDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 2d6073c5-f7f3-4646-b0cd-85f286ddb6a3
+		summarizeBy: count
+		sourceColumn: LastActivityDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column BilledAmount
+		dataType: double
+		sourceProviderType: decimal(10, 2)
+		lineageTag: c9752ca0-be7b-4312-bd5b-c4e4b128d415
+		summarizeBy: sum
+		sourceColumn: BilledAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column AllowedAmount
+		dataType: double
+		sourceProviderType: decimal(10, 2)
+		lineageTag: 0744480e-1194-411c-83ca-b71523da241f
+		summarizeBy: sum
+		sourceColumn: AllowedAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PaidAmount
+		dataType: double
+		sourceProviderType: decimal(10, 2)
+		lineageTag: 3cfe0fec-d7d0-4f8a-9316-32f77c059e2c
+		summarizeBy: sum
+		sourceColumn: PaidAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PRAmount
+		dataType: double
+		sourceProviderType: decimal(10, 2)
+		lineageTag: 93e65dee-ed38-42e6-902e-06d604cbb09e
+		summarizeBy: sum
+		sourceColumn: PRAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CreatedTimestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime
+		lineageTag: 16c4405c-f182-4a40-96bc-a7ed5e9958aa
+		summarizeBy: none
+		sourceColumn: CreatedTimestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column DaysOutstanding
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 21dc5bcf-6614-44ea-a860-6c3d33f8c0b9
+		summarizeBy: sum
+		sourceColumn: DaysOutstanding
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Aging Bucket' =
+			
+			SWITCH(TRUE(),
+			    'Fact_Claims'[DaysOutstanding] <= 30, "0-30 Days",
+			    'Fact_Claims'[DaysOutstanding] <= 60, "31-60 Days",
+			    'Fact_Claims'[DaysOutstanding] <= 90, "61-90 Days",
+			    "90+ Days"
+			)
+		lineageTag: 2ff4a5f2-982e-4768-bc2c-da806445506f
+		summarizeBy: none
+		sortByColumn: 'Aging Sort'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Aging Sort' = ```
+			
+			SWITCH(TRUE(),
+			    'Fact_Claims'[DaysOutstanding] <= 30, 1,
+			    'Fact_Claims'[DaysOutstanding] <= 60, 2,
+			    'Fact_Claims'[DaysOutstanding] <= 90, 3,
+			    4
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 7087d6db-4e01-4d0b-8e71-5720f86bd051
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Claims = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("DESKTOP-7QI3H63\SQLEXPRESS", "Claims"),
+				    dbo_Fact_Claims = Source{[Schema="dbo",Item="Fact_Claims"]}[Data]
+				in
+				    dbo_Fact_Claims
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
