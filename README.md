@@ -29,6 +29,7 @@ Identifies revenue at risk via an **A/R Aging Maturity Distribution**. Includes 
 *   **Clean Claim Rate (33.82%):** Identifying training opportunities for front-end billing.
 *   **Average Cycle Time (19 Days):** Benchmarking payer adjudication speed.
 *   **Denial Concentration:** Mapping **CO-18** and **CO-197** codes to specific CPTs to reduce "Controllable" revenue leakage.
+## 🔒 Data Privacy
+> **Note on Data:** This project utilizes synthetic, de-identified data. While Payer names and CPT/CARC codes are representative of real-world healthcare scenarios, all patient and financial values have been generated for demonstration purposes to ensure HIPAA compliance.
 
-###   Data Privacy
-	Note on Data: This project utilizes synthetic, de-identified data. While Payer names and CPT/CARC codes are industry-standard for 	realism, all Patient IDs, Claim IDs, and financial values are randomized and do not represent actual protected health information 	(PHI) or real provider performance.
+
