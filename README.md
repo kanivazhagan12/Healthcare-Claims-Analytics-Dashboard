@@ -4,6 +4,9 @@
 ## 📋 Project Overview
 This project transforms raw, fragmented medical claims data into a high-performance **Star Schema** to drive executive decision-making and operational efficiency. Drawing on **9 years of SME experience** in Claims Adjudication, I engineered this suite to bridge the gap between complex billing codes (**CARC/RARC**) and actionable financial insights.
 
+### 🚀 [**View Live Interactive Dashboard**](https://bit.ly/RCM-Insights-Dashboard)
+
+
 ## 🚀 Key Features & Business Impact
 
 ### 1. Revenue Integrity (Page 1)
@@ -31,5 +34,6 @@ Identifies revenue at risk via an **A/R Aging Maturity Distribution**. Includes 
 *   **Denial Concentration:** Mapping **CO-18** and **CO-197** codes to specific CPTs to reduce "Controllable" revenue leakage.
 ## 🔒 Data Privacy
 > **Note on Data:** This project utilizes synthetic, de-identified data. While Payer names and CPT/CARC codes are representative of real-world healthcare scenarios, all patient and financial values have been generated for demonstration purposes to ensure HIPAA compliance.
+
 
 
