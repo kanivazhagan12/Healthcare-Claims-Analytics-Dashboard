@@ -7,7 +7,7 @@ This project transforms raw, fragmented medical claims data into a high-performa
 ### 🚀 [**View Live Interactive Dashboard**](https://bit.ly/RCM-Insights-Dashboard)
 
 
-## 🚀 Key Features & Business Impact
+##  💡  Key Features & Business Impact
 
 ### 1. Revenue Integrity (Page 1)
 Provides a "Single Source of Truth" for **$22M+ in Billed Charges**, tracking the correlation between monthly submission volume and the **Net Collection Rate (27.65%)**.
@@ -34,6 +34,7 @@ Identifies revenue at risk via an **A/R Aging Maturity Distribution**. Includes 
 *   **Denial Concentration:** Mapping **CO-18** and **CO-197** codes to specific CPTs to reduce "Controllable" revenue leakage.
 ## 🔒 Data Privacy
 > **Note on Data:** This project utilizes synthetic, de-identified data. While Payer names and CPT/CARC codes are representative of real-world healthcare scenarios, all patient and financial values have been generated for demonstration purposes to ensure HIPAA compliance.
+
 
 
 
